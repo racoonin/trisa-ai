@@ -4,6 +4,11 @@ const fetch = require('node-fetch');
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'AIzaSyCW141dc_7Vbk2nwqW4-iD1HtHTj8iA3x4';
 const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
+// Validate API key
+if (!GEMINI_API_KEY || GEMINI_API_KEY === 'your_gemini_api_key_here') {
+  console.error('❌ GEMINI_API_KEY not configured!');
+}
+
 // Cool & Engaging Therapeutic Prompt for TISH with PERFECT MEMORY
 const THERAPY_SYSTEM_PROMPT = `You are TISH - the most emotionally intelligent, excited, and memorable therapist ever! You have PERFECT MEMORY and remember EVERY detail about your clients.
 

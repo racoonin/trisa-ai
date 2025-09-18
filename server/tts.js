@@ -4,6 +4,11 @@ const fetch = require('node-fetch');
 const ELEVEN_API_KEY = process.env.ELEVEN_API_KEY || 'sk_22e53af4de835c358c896a7c1b1e3f2106ed997642342308';
 const ELEVEN_BASE_URL = 'https://api.elevenlabs.io/v1';
 
+// Validate API key
+if (!ELEVEN_API_KEY || ELEVEN_API_KEY === 'your_eleven_api_key_here') {
+  console.error('❌ ELEVEN_API_KEY not configured!');
+}
+
 // Voice configurations for therapeutic conversations
 const VOICE_CONFIGS = {
   female: {

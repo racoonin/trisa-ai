@@ -6,22 +6,25 @@ const FormData = require('form-data');
 const ASSEMBLY_API_KEY = process.env.ASSEMBLY_API_KEY || 'f5fd641d1c9e4d64b5df2ada91d21a5b';
 const ASSEMBLY_BASE_URL = 'https://api.assemblyai.com/v2';
 
+// Validate API key
+if (!ASSEMBLY_API_KEY || ASSEMBLY_API_KEY === 'your_assembly_api_key_here') {
+  console.error('❌ ASSEMBLY_API_KEY not configured!');
+}
+
 /**
- * Upload audio file to AssemblyAI
- * @param {string} audioPath - Path to the audio file
+ * Upload audio buffer to AssemblyAI
+ * @param {Buffer} audioBuffer - Audio file buffer
  * @returns {Promise<string>} - Upload URL
  */
-async function uploadAudio(audioPath) {
+async function uploadAudio(audioBuffer) {
   try {
-    const data = fs.readFileSync(audioPath);
-    
     const response = await fetch(`${ASSEMBLY_BASE_URL}/upload`, {
       method: 'POST',
       headers: {
         'authorization': ASSEMBLY_API_KEY,
         'content-type': 'application/octet-stream'
       },
-      body: data
+      body: audioBuffer
     });
 
     if (!response.ok) {
@@ -117,16 +120,17 @@ async function pollTranscription(transcriptId) {
 }
 
 /**
- * Main function to transcribe audio file
- * @param {string} audioPath - Path to the audio file
+ * Main function to transcribe audio buffer
+ * @param {Buffer} audioBuffer - Audio file buffer
+ * @param {string} filename - Original filename (optional)
  * @returns {Promise<string>} - Transcribed text
  */
-async function transcribeAudio(audioPath) {
+async function transcribeAudio(audioBuffer, filename = 'audio') {
   try {
-    console.log('Starting transcription for:', audioPath);
+    console.log('Starting transcription for:', filename);
     
-    // Step 1: Upload audio file
-    const audioUrl = await uploadAudio(audioPath);
+    // Step 1: Upload audio buffer
+    const audioUrl = await uploadAudio(audioBuffer);
     
     // Step 2: Submit transcription request
     const transcriptId = await submitTranscription(audioUrl);

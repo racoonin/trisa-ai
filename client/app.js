@@ -35,6 +35,7 @@ class VoiceTherapist {
         this.historyBtn = document.getElementById('historyBtn');
         this.helpBtn = document.getElementById('helpBtn');
         this.closeHelpBtn = document.getElementById('closeHelpBtn');
+        this.helpModal = document.getElementById('helpModal');
         // Browser warning
         this.browserWarning = document.getElementById('browserWarning');
         

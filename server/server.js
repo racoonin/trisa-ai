@@ -22,8 +22,9 @@ app.use(express.static(path.join(__dirname, '../client')));
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/index.html'));
 });
+
 const upload = multer({
-  dest: 'uploads/',
+  storage: multer.memoryStorage(), // Use memory storage for serverless
   limits: {
     fileSize: 10 * 1024 * 1024 // 10MB limit
   }
@@ -54,13 +55,6 @@ function addToHistory(userMessage, aiResponse) {
   console.log('========================');
 }
 
-// Routes
-
-// Serve the main page
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/index.html'));
-});
-
 // Speech-to-Text endpoint with performance timing
 app.post('/stt', upload.single('audio'), async (req, res) => {
   const startTime = Date.now();
@@ -69,12 +63,10 @@ app.post('/stt', upload.single('audio'), async (req, res) => {
       return res.status(400).json({ error: 'No audio file provided' });
     }
 
-    console.log('Received audio file:', req.file.filename, 'Size:', req.file.size, 'bytes');
+    console.log('Received audio file:', req.file.originalname, 'Size:', req.file.size, 'bytes');
     
-    const transcript = await transcribeAudio(req.file.path);
-    
-    // Clean up uploaded file
-    fs.unlinkSync(req.file.path);
+    // For serverless, we'll pass the buffer instead of file path
+    const transcript = await transcribeAudio(req.file.buffer, req.file.originalname);
     
     const endTime = Date.now();
     console.log(`STT completed in ${endTime - startTime}ms`);
@@ -82,7 +74,7 @@ app.post('/stt', upload.single('audio'), async (req, res) => {
     res.json({ transcript });
   } catch (error) {
     console.error('STT Error:', error);
-    res.status(500).json({ error: 'Speech transcription failed' });
+    res.status(500).json({ error: 'Speech transcription failed: ' + error.message });
   }
 });
 
@@ -176,16 +168,33 @@ app.use((error, req, res, next) => {
   res.status(500).json({ error: 'Internal server error' });
 });
 
-// Create uploads directory if it doesn't exist
-if (!fs.existsSync('uploads')) {
+// Create uploads directory if it doesn't exist (only in local environment)
+if (process.env.NODE_ENV !== 'production' && !fs.existsSync('uploads')) {
   fs.mkdirSync('uploads');
 }
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`🎙️ AI Voice Therapist MVP running on port ${PORT}`);
-  console.log(`Open http://localhost:${PORT} to start therapy session`);
-  console.log('=== Server Ready ===');
+// Add basic health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ 
+    status: 'ok', 
+    timestamp: new Date().toISOString(),
+    env: process.env.NODE_ENV || 'development',
+    hasApiKeys: {
+      assembly: !!process.env.ASSEMBLY_API_KEY,
+      gemini: !!process.env.GEMINI_API_KEY,
+      eleven: !!process.env.ELEVEN_API_KEY
+    }
+  });
 });
 
+// Start server (for local development)
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`🎙️ AI Voice Therapist MVP running on port ${PORT}`);
+    console.log(`Open http://localhost:${PORT} to start therapy session`);
+    console.log('=== Server Ready ===');
+  });
+}
+
+// Export for Vercel
 module.exports = app;
