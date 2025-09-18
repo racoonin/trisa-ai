@@ -3,24 +3,53 @@
   "builds": [
     {
       "src": "server/server.js",
-      "use": "@vercel/node",
-      "config": {
-        "maxLambdaSize": "50mb"
-      }
+      "use": "@vercel/node"
+    },
+    {
+      "src": "client/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "server/server.js"
+      "src": "/styles.css",
+      "dest": "/client/styles.css"
     },
     {
-      "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot))",
-      "dest": "/client/$1"
+      "src": "/app.js",
+      "dest": "/client/app.js"
+    },
+    {
+      "src": "/logo.png",
+      "dest": "/client/logo.png"
+    },
+    {
+      "src": "/stt",
+      "dest": "/server/server.js"
+    },
+    {
+      "src": "/therapy",
+      "dest": "/server/server.js"
+    },
+    {
+      "src": "/tts",
+      "dest": "/server/server.js"
+    },
+    {
+      "src": "/health",
+      "dest": "/server/server.js"
+    },
+    {
+      "src": "/history",
+      "dest": "/server/server.js"
+    },
+    {
+      "src": "/clear-history",
+      "dest": "/server/server.js"
     },
     {
       "src": "/(.*)",
-      "dest": "server/server.js"
+      "dest": "/server/server.js"
     }
   ]
 }

@@ -16,11 +16,38 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
-app.use(express.static(path.join(__dirname, '../client')));
+
+// Serve static files from client directory with proper headers
+app.use(express.static(path.join(__dirname, '../client'), {
+  setHeaders: (res, path) => {
+    if (path.endsWith('.css')) {
+      res.set('Content-Type', 'text/css');
+    }
+    if (path.endsWith('.js')) {
+      res.set('Content-Type', 'application/javascript');
+    }
+    if (path.endsWith('.png') || path.endsWith('.jpg') || path.endsWith('.jpeg')) {
+      res.set('Cache-Control', 'public, max-age=86400'); // Cache images for 1 day
+    }
+  }
+}));
 
 // For deployment - handle client routes
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/index.html'));
+});
+
+// Explicit routes for static assets
+app.get('/styles.css', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/styles.css'));
+});
+
+app.get('/app.js', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/app.js'));
+});
+
+app.get('/logo.png', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/logo.png'));
 });
 
 const upload = multer({
