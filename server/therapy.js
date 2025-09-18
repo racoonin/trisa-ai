@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 
 // Gemini API configuration
-const GEMINI_API_KEY = 'AIzaSyCW141dc_7Vbk2nwqW4-iD1HtHTj8iA3x4';
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'AIzaSyCW141dc_7Vbk2nwqW4-iD1HtHTj8iA3x4';
 const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
 // Cool & Engaging Therapeutic Prompt for TISH with PERFECT MEMORY

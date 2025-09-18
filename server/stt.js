@@ -3,7 +3,7 @@ const fs = require('fs');
 const FormData = require('form-data');
 
 // AssemblyAI API configuration
-const ASSEMBLY_API_KEY = 'f5fd641d1c9e4d64b5df2ada91d21a5b';
+const ASSEMBLY_API_KEY = process.env.ASSEMBLY_API_KEY || 'f5fd641d1c9e4d64b5df2ada91d21a5b';
 const ASSEMBLY_BASE_URL = 'https://api.assemblyai.com/v2';
 
 /**
