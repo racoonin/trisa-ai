@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TISH - Your AI Therapy Companion</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Background gradient -->
+    <div class="bg-gradient"></div>
+    
+    <!-- Main container -->
+    <div class="container">
+        <!-- Header with disclaimer -->
+        <header class="header">
+            <div class="logo">
+                <img src="logo.png" alt="TISH" class="logo-image">
+            </div>
+        </header>
+
+        <!-- Main therapy interface -->
+        <main class="therapy-interface">
+            <!-- Status display -->
+            <div class="status-section">
+                <div class="connection-status" id="connectionStatus">
+                    <i class="fas fa-circle"></i>
+                    <span>Checking browser compatibility...</span>
+                </div>
+                
+                <!-- Browser compatibility warning -->
+                <div class="browser-warning" id="browserWarning" style="display: none;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>For best experience, please use Chrome, Firefox, or Edge browser with microphone access enabled.</p>
+                </div>
+            </div>
+
+            <!-- Voice controls -->
+            <div class="voice-controls">
+                <div class="record-section">
+                    <button class="record-btn" id="recordBtn">
+                        <div class="record-btn-inner">
+                            <i class="fas fa-microphone" id="micIcon"></i>
+                        </div>
+                        <div class="pulse-animation" id="pulseAnimation"></div>
+                    </button>
+                    <p class="record-instruction" id="recordInstruction">Tap to start speaking</p>
+                </div>
+
+                <!-- Voice selection -->
+                <div class="voice-selection">
+                    <label for="voiceToggle">Voice:</label>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="voiceToggle" checked>
+                        <label for="voiceToggle" class="toggle-label">
+                            <span class="toggle-text" data-on="Female" data-off="Male"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conversation display -->
+            <div class="conversation-section">
+                <!-- Real-time transcript -->
+                <div class="transcript-box" id="transcriptBox">
+                    <div class="message-header">
+                        <i class="fas fa-user"></i>
+                        <span>You said:</span>
+                    </div>
+                    <div class="message-content" id="transcriptContent">
+                        Your words will appear here in real-time as you speak...
+                    </div>
+                </div>
+
+                <!-- AI response -->
+                <div class="response-box" id="responseBox">
+                    <div class="message-header">
+                        <i class="fas fa-heart"></i>
+                        <span>Therapist:</span>
+                    </div>
+                    <div class="message-content" id="responseContent">
+                        <div class="welcome-message">
+                            Hi! I'm TISH, your therapy companion. I'm here to listen with genuine care and help you work through whatever's on your mind. Take your time - this is your safe space.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Audio player (hidden) -->
+            <audio id="audioPlayer" preload="auto"></audio>
+
+            <!-- Loading states -->
+            <div class="loading-overlay" id="loadingOverlay">
+                <div class="loading-content">
+                    <div class="loading-spinner"></div>
+                    <p class="loading-text" id="loadingText">Processing your voice...</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer controls -->
+        <footer class="footer">
+            <div class="control-buttons">
+                <button class="control-btn" id="clearBtn" title="Clear conversation">
+                    <i class="fas fa-trash-alt"></i>
+                    <span>Clear</span>
+                </button>
+                <button class="control-btn" id="historyBtn" title="View history">
+                    <i class="fas fa-history"></i>
+                    <span>History</span>
+                </button>
+                <button class="control-btn" id="helpBtn" title="Help & Support">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Help</span>
+                </button>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Help modal -->
+    <div class="modal-overlay" id="helpModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>How to Use Voice Therapy</h3>
+                <button class="close-btn" id="closeHelpBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="help-section">
+                    <h4><i class="fas fa-microphone"></i> Getting Started</h4>
+                    <p>1. Click the microphone button to start recording</p>
+                    <p>2. Speak naturally about what's on your mind</p>
+                    <p>3. Click again to stop and receive a response</p>
+                </div>
+                <div class="help-section">
+                    <h4><i class="fas fa-volume-up"></i> Voice Options</h4>
+                    <p>Toggle between male and female therapeutic voices using the switch above the microphone.</p>
+                </div>
+                <div class="help-section">
+                    <h4><i class="fas fa-shield-alt"></i> Safety & Privacy</h4>
+                    <p>Your conversations are processed securely and not permanently stored. If you're in crisis, please contact emergency services or a crisis helpline immediately.</p>
+                </div>
+                <div class="help-section crisis-resources">
+                    <h4><i class="fas fa-phone"></i> Crisis Resources</h4>
+                    <p><strong>US:</strong> 988 (Suicide & Crisis Lifeline)</p>
+                    <p><strong>UK:</strong> 116 123 (Samaritans)</p>
+                    <p><strong>Emergency:</strong> 911 (US), 999 (UK), 112 (EU)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>
